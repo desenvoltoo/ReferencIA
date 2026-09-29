@@ -1,118 +1,139 @@
 'use strict';
 
-// Partículas verde-lima e conexões brancas com os parâmetros da referência.
-// Cada banner tem sua própria superfície; os textos e links ficam acima dela.
+// Rede visual da referência: pontos verde-lima, conexões brancas e repulsão
+// suave quando o cursor passa pelo banner. O canvas é independente de plugins,
+// então a animação inicia igual em diferentes navegadores.
 (() => {
   const surfaces = document.querySelectorAll('[data-particles]');
-  if (!surfaces.length || typeof window.particlesJS !== 'function') return;
+  if (!surfaces.length) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const smallScreen = window.matchMedia('(max-width: 720px)');
 
   surfaces.forEach(surface => {
     const hero = surface.parentElement;
-    let instance;
-    let visible = true;
-    let frame;
-    let animationFrame;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'particles-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    surface.appendChild(canvas);
+    const context = canvas.getContext('2d', { alpha: true });
+    if (!context) return;
 
-    function updateMotion() {
-      if (!instance) return;
-      const animate = visible && !document.hidden && !reducedMotion.matches;
-      // A narrow preview or window can still have a mouse. Filter touch events
-      // in the pointer handler instead of disabling interaction by screen width.
-      instance.interactivity.events.onhover.enable = animate;
-      window.cancelAnimationFrame(animationFrame);
-      window.cancelAnimationFrame(instance.fn.drawAnimFrame);
-      instance.particles.move.enable = animate;
-      instance.fn.particlesDraw();
-      if (animate) animationFrame = window.requestAnimationFrame(drawFrame);
+    const state = {
+      width: 0, height: 0, ratio: 1, particles: [],
+      pointer: { active: false, x: 0, y: 0 }, visible: true,
+      animationFrame: 0, resizeFrame: 0,
+      speed: reducedMotion.matches ? 0.18 : 0.9
+    };
+
+    function makeParticle() {
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = state.speed * (0.72 + Math.random() * 0.56);
+      return { x: Math.random() * state.width, y: Math.random() * state.height,
+        vx: Math.cos(angle) * velocity, vy: Math.sin(angle) * velocity,
+        radius: 0.8 + Math.random() * 1.3, opacity: 0.35 + Math.random() * 0.3 };
     }
 
-    // Keep the animation loop here instead of relying on the library's internal
-    // scheduler. This makes movement reliable after delayed fonts/layouts and
-    // across browsers that throttle a canvas initialized during page load.
-    function drawFrame() {
-      if (!instance) return;
-      const animate = visible && !document.hidden && !reducedMotion.matches;
-      if (!animate) return updateMotion();
-      instance.particles.move.enable = true;
-      instance.fn.particlesDraw();
-      animationFrame = window.requestAnimationFrame(drawFrame);
-    }
-
-    function sizeCanvas() {
-      const { width, height } = surface.getBoundingClientRect();
-      // Wait for layout instead of creating an empty, zero-height network.
-      if (width < 1 || height < 1) return;
-      if (!instance) {
-        window.particlesJS(surface.id, {
-          particles: {
-            number: { value: smallScreen.matches ? 100 : 178,
-              density: { enable: true, value_area: smallScreen.matches ? 800 : 1443.0708547789707 } },
-            color: { value: '#b6f567' },
-            shape: { type: 'circle', stroke: { width: 0 } },
-            opacity: { value: 0.5, random: true, anim: { enable: false } },
-            size: { value: 2, random: true, anim: { enable: false } },
-            // particles.js may draw while sizing a static canvas, before its own
-            // RGB conversion runs. Seed the same white to keep that draw valid.
-            line_linked: { enable: true, distance: 150, color: '#ffffff',
-              color_rgb_line: { r: 255, g: 255, b: 255 }, opacity: 0.4, width: 1 },
-            move: { enable: false, speed: 6, direction: 'none', random: false,
-              straight: false, out_mode: 'out', bounce: false,
-              attract: { enable: false, rotateX: 600, rotateY: 1200 } }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: { onhover: { enable: false, mode: 'repulse' },
-              onclick: { enable: false }, resize: false },
-            modes: { repulse: { distance: 200, duration: 0.4 } }
-          },
-          retina_detect: true
-        });
-        instance = window.pJSDom.find(item => item.pJS.canvas.el.parentElement === surface)?.pJS;
-        if (!instance) return;
-      } else {
-        window.cancelAnimationFrame(animationFrame);
-        window.cancelAnimationFrame(instance.fn.drawAnimFrame);
-        instance.fn.retinaInit();
-        instance.fn.canvasSize();
-        instance.fn.particlesEmpty();
-        instance.fn.particlesCreate();
-        instance.fn.vendors.densityAutoParticles();
-      }
-      updateMotion();
-    }
-
-    function queueResize() {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(sizeCanvas);
-    }
-
-    hero.addEventListener('pointermove', event => {
-      if (!instance || !instance.interactivity.events.onhover.enable || event.pointerType === 'touch') return;
+    function resize() {
       const bounds = surface.getBoundingClientRect();
-      instance.interactivity.mouse.pos_x = (event.clientX - bounds.left) * instance.canvas.pxratio;
-      instance.interactivity.mouse.pos_y = (event.clientY - bounds.top) * instance.canvas.pxratio;
-      instance.interactivity.status = 'mousemove';
-    }, { passive: true });
-    hero.addEventListener('pointerleave', () => {
-      if (!instance) return;
-      instance.interactivity.status = 'mouseleave';
-      instance.interactivity.mouse.pos_x = null;
-      instance.interactivity.mouse.pos_y = null;
+      if (bounds.width < 1 || bounds.height < 1) return;
+      const oldWidth = state.width || bounds.width;
+      const oldHeight = state.height || bounds.height;
+      state.width = bounds.width;
+      state.height = bounds.height;
+      state.ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(state.width * state.ratio);
+      canvas.height = Math.round(state.height * state.ratio);
+      canvas.style.width = `${state.width}px`;
+      canvas.style.height = `${state.height}px`;
+      context.setTransform(state.ratio, 0, 0, state.ratio, 0, 0);
+      const target = Math.min(178, Math.max(58, Math.round(state.width * state.height / 8000)));
+      if (!state.particles.length) state.particles = Array.from({ length: target }, makeParticle);
+      else {
+        state.particles.forEach(point => { point.x *= state.width / oldWidth; point.y *= state.height / oldHeight; });
+        while (state.particles.length < target) state.particles.push(makeParticle());
+        state.particles.length = target;
+      }
+      draw();
+    }
+
+    function setPointer(event) {
+      if (event.pointerType === 'touch') return;
+      const bounds = surface.getBoundingClientRect();
+      state.pointer.x = event.clientX - bounds.left;
+      state.pointer.y = event.clientY - bounds.top;
+      state.pointer.active = true;
+    }
+
+    function clearPointer() { state.pointer.active = false; }
+
+    function updatePoint(point) {
+      if (state.pointer.active && !reducedMotion.matches) {
+        const dx = point.x - state.pointer.x;
+        const dy = point.y - state.pointer.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > 0 && distance < 210) {
+          const force = (1 - distance / 210) * 0.8;
+          point.vx += dx / distance * force;
+          point.vy += dy / distance * force;
+        }
+      }
+      const maxVelocity = reducedMotion.matches ? 0.42 : 2.8;
+      const velocity = Math.sqrt(point.vx * point.vx + point.vy * point.vy);
+      if (velocity > maxVelocity) { point.vx = point.vx / velocity * maxVelocity; point.vy = point.vy / velocity * maxVelocity; }
+      point.x += point.vx; point.y += point.vy;
+      point.vx *= 0.997; point.vy *= 0.997;
+      if (point.x < -8) point.x = state.width + 8;
+      if (point.x > state.width + 8) point.x = -8;
+      if (point.y < -8) point.y = state.height + 8;
+      if (point.y > state.height + 8) point.y = -8;
+    }
+
+    function draw() {
+      if (!state.width || !state.height) return;
+      context.clearRect(0, 0, state.width, state.height);
+      state.particles.forEach(updatePoint);
+      for (let i = 0; i < state.particles.length; i += 1) {
+        const first = state.particles[i];
+        for (let j = i + 1; j < state.particles.length; j += 1) {
+          const second = state.particles[j];
+          const dx = first.x - second.x;
+          const dy = first.y - second.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance > 150) continue;
+          context.strokeStyle = `rgba(255,255,255,${(1 - distance / 150) * 0.42})`;
+          context.lineWidth = 1;
+          context.beginPath(); context.moveTo(first.x, first.y); context.lineTo(second.x, second.y); context.stroke();
+        }
+      }
+      state.particles.forEach(point => {
+        context.fillStyle = `rgba(182,245,103,${point.opacity})`;
+        context.beginPath(); context.arc(point.x, point.y, point.radius, 0, Math.PI * 2); context.fill();
+      });
+    }
+
+    function animate() {
+      if (!state.visible || document.hidden) { state.animationFrame = 0; return; }
+      draw(); state.animationFrame = window.requestAnimationFrame(animate);
+    }
+    function start() { if (!state.animationFrame) state.animationFrame = window.requestAnimationFrame(animate); }
+    function updateVisibility() {
+      if (state.visible && !document.hidden) start();
+      else if (state.animationFrame) { window.cancelAnimationFrame(state.animationFrame); state.animationFrame = 0; }
+    }
+    function queueResize() {
+      window.cancelAnimationFrame(state.resizeFrame);
+      state.resizeFrame = window.requestAnimationFrame(() => { state.resizeFrame = 0; resize(); });
+    }
+
+    hero.addEventListener('pointermove', setPointer, { passive: true });
+    hero.addEventListener('pointerleave', clearPointer, { passive: true });
+    document.addEventListener('visibilitychange', updateVisibility);
+    reducedMotion.addEventListener('change', () => {
+      state.speed = reducedMotion.matches ? 0.18 : 0.9;
+      state.particles.forEach(point => { const angle = Math.atan2(point.vy, point.vx); point.vx = Math.cos(angle) * state.speed; point.vy = Math.sin(angle) * state.speed; });
     });
-    reducedMotion.addEventListener('change', updateMotion);
-    smallScreen.addEventListener('change', queueResize);
-    document.addEventListener('visibilitychange', updateMotion);
     if ('ResizeObserver' in window) new ResizeObserver(queueResize).observe(surface);
     else window.addEventListener('resize', queueResize, { passive: true });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(entries => {
-        visible = entries[0].isIntersecting;
-        updateMotion();
-      }).observe(hero);
-    }
-    document.fonts?.ready.then(queueResize);
-    queueResize();
+    if ('IntersectionObserver' in window) new IntersectionObserver(entries => { state.visible = entries[0].isIntersecting; updateVisibility(); }).observe(hero);
+    queueResize(); start();
   });
 })();
