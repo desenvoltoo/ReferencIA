@@ -13,6 +13,7 @@
     let instance;
     let visible = true;
     let frame;
+    let animationFrame;
 
     function updateMotion() {
       if (!instance) return;
@@ -20,9 +21,23 @@
       // A narrow preview or window can still have a mouse. Filter touch events
       // in the pointer handler instead of disabling interaction by screen width.
       instance.interactivity.events.onhover.enable = animate;
+      window.cancelAnimationFrame(animationFrame);
       window.cancelAnimationFrame(instance.fn.drawAnimFrame);
       instance.particles.move.enable = animate;
-      instance.fn.vendors.draw();
+      instance.fn.particlesDraw();
+      if (animate) animationFrame = window.requestAnimationFrame(drawFrame);
+    }
+
+    // Keep the animation loop here instead of relying on the library's internal
+    // scheduler. This makes movement reliable after delayed fonts/layouts and
+    // across browsers that throttle a canvas initialized during page load.
+    function drawFrame() {
+      if (!instance) return;
+      const animate = visible && !document.hidden && !reducedMotion.matches;
+      if (!animate) return updateMotion();
+      instance.particles.move.enable = true;
+      instance.fn.particlesDraw();
+      animationFrame = window.requestAnimationFrame(drawFrame);
     }
 
     function sizeCanvas() {
@@ -57,6 +72,7 @@
         instance = window.pJSDom.find(item => item.pJS.canvas.el.parentElement === surface)?.pJS;
         if (!instance) return;
       } else {
+        window.cancelAnimationFrame(animationFrame);
         window.cancelAnimationFrame(instance.fn.drawAnimFrame);
         instance.fn.retinaInit();
         instance.fn.canvasSize();
