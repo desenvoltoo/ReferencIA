@@ -45,7 +45,7 @@ Abra http://localhost:8080. Também pode publicar os mesmos arquivos em uma hosp
 - Menu e formulário: `assets/site.js`.
 - Contatos: WhatsApp (11) 95688-5611, telefone (11) 2091-0243 e contato@referencia.tech.
 - Atualize `sitemap.xml` ao adicionar ou remover páginas.
-- A fonte Bricolage Grotesque é distribuída com a licença SIL OFL em `assets/OFL-Bricolage-Grotesque.txt`.
+- As fontes Bricolage Grotesque e Poppins são locais e acompanham suas licenças SIL OFL em `assets/`. A biblioteca particles.js acompanha a licença MIT.
 
 ## Formulário e planilha
 
@@ -58,3 +58,7 @@ A publicação não altera a conta SheetDB nem as permissões da planilha. A int
 ## Verificações desta versão
 
 Sintaxe JavaScript, referências locais de páginas e recursos, âncoras, IDs e hierarquia de título principal. Os arquivos de imagem e fonte foram conferidos. O código contém estilos para celular, menu acessível por teclado e respeito à preferência de movimento reduzido. A aparência final em dispositivos e o recebimento real do formulário devem ser conferidos na versão hospedada.
+
+## Identidade visual
+
+O fundo animado de partículas e conexões, os módulos azuis e a imagem de benefícios retomam a referência original. A logo oficial está incorporada nas páginas para não depender de uma requisição separada ao arquivo de imagem. A animação respeita a preferência de movimento reduzido e pausa quando fica fora da tela.

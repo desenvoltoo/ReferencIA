@@ -1,5 +1,56 @@
 'use strict';
 
+// Mesmo efeito de rede de partículas do site de referência, com o arquivo
+// carregado localmente e sem o contador de desempenho da demonstração original.
+const particleSurface = document.querySelector('[data-particles]');
+if (particleSurface && typeof window.particlesJS === 'function') {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const narrowViewport = window.matchMedia('(max-width: 720px)');
+  window.particlesJS(particleSurface.id, {
+    particles: {
+      number: { value: narrowViewport.matches ? 100 : 178, density: { enable: true, value_area: narrowViewport.matches ? 800 : 1443 } },
+      color: { value: '#b6f567' },
+      shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+      opacity: { value: 0.5, random: true, anim: { enable: false } },
+      size: { value: 2, random: true, anim: { enable: false } },
+      line_linked: { enable: true, distance: 155, color: '#ffffff', opacity: 0.34, width: 1 },
+      move: { enable: !reduceMotion.matches, speed: 1.5, direction: 'none', random: false,
+        straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+    },
+    interactivity: {
+      detect_on: 'window',
+      events: { onhover: { enable: !reduceMotion.matches && !narrowViewport.matches, mode: 'grab' },
+        onclick: { enable: false }, resize: true },
+      modes: { grab: { distance: 160, line_linked: { opacity: 0.4 } } }
+    },
+    retina_detect: true
+  });
+  const particleInstance = window.pJSDom[window.pJSDom.length - 1]?.pJS;
+  let visible = true;
+  let paused = reduceMotion.matches;
+  function updateParticleAnimation() {
+    if (!particleInstance) return;
+    const shouldAnimate = visible && !document.hidden && !reduceMotion.matches;
+    if (shouldAnimate === !paused) return;
+    paused = !shouldAnimate;
+    particleInstance.particles.move.enable = shouldAnimate;
+    if (shouldAnimate) {
+      particleInstance.fn.vendors.draw();
+    } else {
+      window.cancelAnimationFrame(particleInstance.fn.drawAnimFrame);
+      particleInstance.fn.particlesDraw();
+    }
+  }
+  reduceMotion.addEventListener('change', updateParticleAnimation);
+  document.addEventListener('visibilitychange', updateParticleAnimation);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      updateParticleAnimation();
+    }).observe(particleSurface);
+  }
+}
+
 const menuButton = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-menu]');
 function closeMenu(restoreFocus = false) {

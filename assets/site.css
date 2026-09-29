@@ -8,3 +8,52 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
 .contact-copy h1{font-size:clamp(2.1rem,4vw,3.25rem)}
+
+/* Identidade visual da referência: marca, tipografia, partículas e módulos azuis. */
+@font-face{font-family:Poppins;src:url('./poppins-regular.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:Poppins;src:url('./poppins-semibold.woff2') format('woff2');font-style:normal;font-weight:600 800;font-display:swap}
+body{font-family:Poppins,'Segoe UI',Arial,sans-serif;background:#f5f5f5}
+h1,h2,h3{font-family:Brand,Poppins,'Segoe UI',Arial,sans-serif}
+.header{background:#2843fa;border-bottom-color:#ffffff30}
+.nav-wrap{height:78px}
+.brand img{width:254px;height:auto;filter:brightness(0) invert(1)}
+.hero{background:#2843fa}
+.hero:before{display:none}
+.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hero-particles canvas{display:block;width:100%;height:100%}
+.hero>.container{position:relative;z-index:1;pointer-events:none}
+.hero a,.hero button{pointer-events:auto}
+.hero-inner{max-width:1100px;padding:112px 0 96px;text-align:center}
+.hero h1{font-size:clamp(2.5rem,4.1vw,3.55rem);line-height:1.08;font-weight:650;letter-spacing:-.028em}
+.hero .lead{max-width:1020px;margin:39px auto 26px;font-size:1.05rem;line-height:1.65;color:#f3f5ff}
+.hero-highlight{margin:30px auto 35px;color:var(--lime);font-size:1.08rem;font-weight:600;max-width:960px}
+.hero .button.lime{border-radius:22px;padding:15px 28px;box-shadow:0 6px 22px #091bba42;font-size:1.05rem;min-height:54px}
+.hero .button.outline{border-radius:22px}
+.hero .actions{gap:16px}
+.section-heading .eyebrow{border-radius:30px;background:#343541;color:#fff;padding:6px 19px;letter-spacing:0;font-size:.85rem;text-transform:none}
+.section-heading .eyebrow:before{display:none}
+.solution-card{background:var(--blue);border-color:transparent;color:white;box-shadow:0 6px 16px #203aeb20;min-height:320px}
+.solution-card:hover{background:#1e38ec;border-color:#7d8eff;box-shadow:0 14px 28px #203aeb30}
+.solution-card .icon-box{background:#ffffff12;color:#fff;border:1px solid #ffffff26}
+.solution-card .card-num{color:#dfe4ff}
+.solution-card p{color:#f0f2ff}
+.solution-card .card-link{color:var(--lime)}
+.solution-card.featured{background:#213ada;border-color:transparent}
+.solution-card.featured .icon-box{background:#ffffff12;color:#fff}
+.results .section-heading{display:block;text-align:center;max-width:880px;margin-inline:auto}
+.results .section-heading>div,.results .section-heading>p{max-width:none}
+.results .section-heading>p{max-width:740px;margin:24px auto 0}
+.results .section-heading .eyebrow{background:#ffffff0a;border:1px solid #ffffff28;color:var(--lime)}
+.benefits-showcase{display:grid;grid-template-columns:1fr 280px 1fr;gap:45px;align-items:center;margin-top:55px}
+.benefits-column{display:grid;gap:34px}
+.benefits-column .benefit{border-top:0;padding-top:0}
+.benefits-column .benefit .icon{margin-bottom:12px;width:28px;height:28px}
+.benefits-column .benefit h3{font-size:1.3rem;margin-bottom:10px}
+.benefits-column .benefit p{font-size:.88rem}
+.benefits-phone{margin:0}
+.benefits-phone img{width:100%;max-width:280px;margin:auto;border-radius:28px}
+.footer .brand img{width:254px}
+@media(min-width:1600px){.hero-inner{padding-top:126px;padding-bottom:116px}}
+@media(max-width:1000px){.brand img{width:215px}.nav-links{gap:24px}.benefits-showcase{grid-template-columns:1fr 215px 1fr;gap:25px}.hero-inner{padding:88px 0 72px}.hero h1{font-size:3rem}.benefits-column .benefit h3{font-size:1.1rem}.benefits-column .benefit p{font-size:.81rem}}
+@media(max-width:720px){.nav-wrap{height:74px}.brand img{width:225px;max-width:59vw}.hero-inner{padding:70px 0 62px}.hero h1{font-size:clamp(2.25rem,7.8vw,3.05rem);line-height:1.12}.hero h1 br{display:none}.hero .lead{font-size:.94rem;margin:28px auto 20px}.hero-highlight{font-size:.95rem;line-height:1.65;margin:22px auto 28px}.hero .actions{gap:12px}.hero .button{width:100%;font-size:1rem}.hero .button.lime{border-radius:17px}.hero .button.outline{border-radius:17px}.benefits-showcase{grid-template-columns:1fr 1fr;gap:28px;margin-top:34px}.benefits-phone{grid-column:1/-1;grid-row:1}.benefits-phone img{width:190px;max-height:390px;object-fit:contain}.benefits-column .benefit h3{font-size:1.14rem}.benefits-column .benefit p{font-size:.86rem}.benefits-column{align-self:start;gap:30px}.footer .brand img{width:240px}.solution-card{min-height:300px}}
+@media(max-width:390px){.benefits-showcase{grid-template-columns:1fr}.benefits-column .benefit h3{font-size:1.2rem}.benefits-column .benefit p{font-size:.92rem}.benefits-phone{grid-column:1}}
