@@ -13,15 +13,15 @@ if (particleSurface && typeof window.particlesJS === 'function') {
       shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
       opacity: { value: 0.5, random: true, anim: { enable: false } },
       size: { value: 2, random: true, anim: { enable: false } },
-      line_linked: { enable: true, distance: 155, color: '#ffffff', opacity: 0.34, width: 1 },
-      move: { enable: !reduceMotion.matches, speed: 1.5, direction: 'none', random: false,
+      line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+      move: { enable: !reduceMotion.matches, speed: 6, direction: 'none', random: false,
         straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
     },
     interactivity: {
       detect_on: 'window',
-      events: { onhover: { enable: !reduceMotion.matches && !narrowViewport.matches, mode: 'grab' },
+      events: { onhover: { enable: !reduceMotion.matches && !narrowViewport.matches, mode: 'repulse' },
         onclick: { enable: false }, resize: true },
-      modes: { grab: { distance: 160, line_linked: { opacity: 0.4 } } }
+      modes: { repulse: { distance: 200, duration: 0.4 } }
     },
     retina_detect: true
   });
@@ -31,6 +31,7 @@ if (particleSurface && typeof window.particlesJS === 'function') {
   function updateParticleAnimation() {
     if (!particleInstance) return;
     const shouldAnimate = visible && !document.hidden && !reduceMotion.matches;
+    particleInstance.interactivity.events.onhover.enable = shouldAnimate && !narrowViewport.matches;
     if (shouldAnimate === !paused) return;
     paused = !shouldAnimate;
     particleInstance.particles.move.enable = shouldAnimate;
@@ -53,11 +54,13 @@ if (particleSurface && typeof window.particlesJS === 'function') {
 
 const menuButton = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-menu]');
+const solutionsMenu = document.querySelector('.nav-solutions');
 function closeMenu(restoreFocus = false) {
   if (!menuButton || !menu) return;
   menu.classList.remove('is-open');
   menuButton.setAttribute('aria-expanded', 'false');
   menuButton.setAttribute('aria-label', 'Abrir menu');
+  if (solutionsMenu) solutionsMenu.open = false;
   if (restoreFocus) menuButton.focus();
 }
 if (menuButton && menu) {
@@ -67,7 +70,14 @@ if (menuButton && menu) {
     menuButton.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
   });
   menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(true); });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (menu.classList.contains('is-open')) closeMenu(true);
+    else if (solutionsMenu?.open) {
+      solutionsMenu.open = false;
+      solutionsMenu.querySelector('summary').focus();
+    }
+  });
   document.addEventListener('click', event => {
     if (!menu.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
   });
@@ -80,6 +90,7 @@ const CONTACT_ENDPOINT = 'https://sheetdb.io/api/v1/qm2uuqbxs1mmy?sheet=Formul%C
 const form = document.querySelector('[data-contact-form]');
 if (form) {
   const submit = form.querySelector('button[type="submit"]');
+  const submitLabel = submit.textContent;
   const status = form.querySelector('[role="status"]');
   const fallback = form.querySelector('[data-form-fallback]');
   const phone = form.elements.telefone;
@@ -128,7 +139,7 @@ if (form) {
     } finally {
       clearTimeout(timeout);
       submit.disabled = false;
-      submit.textContent = 'Solicitar uma conversa';
+      submit.textContent = submitLabel;
       form.removeAttribute('aria-busy');
     }
   });

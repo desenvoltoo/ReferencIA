@@ -1,6 +1,6 @@
 # ReferencIA Tech
 
-Site institucional inspirado em https://referencia.tech/, com a identidade azul e verde-lima, logotipo e imagens da marca. HTML, CSS e JavaScript, sem dependências de execução e sem banco de dados próprio.
+Site institucional reconstruído a partir de https://referencia.tech/, com o conteúdo das páginas, identidade azul e verde-lima, logotipo, ícones, imagens e banners originais da marca. HTML, CSS e JavaScript, sem dependências de execução e sem banco de dados próprio.
 
 ## Páginas
 
@@ -45,7 +45,7 @@ Abra http://localhost:8080. Também pode publicar os mesmos arquivos em uma hosp
 - Menu e formulário: `assets/site.js`.
 - Contatos: WhatsApp (11) 95688-5611, telefone (11) 2091-0243 e contato@referencia.tech.
 - Atualize `sitemap.xml` ao adicionar ou remover páginas.
-- As fontes Bricolage Grotesque e Poppins são locais e acompanham suas licenças SIL OFL em `assets/`. A biblioteca particles.js acompanha a licença MIT.
+- As fontes Bricolage Grotesque, Poppins, Work Sans e Syne são locais e acompanham suas licenças SIL OFL em `assets/`. A biblioteca particles.js acompanha a licença MIT.
 
 ## Formulário e planilha
 
@@ -62,3 +62,11 @@ Sintaxe JavaScript, referências locais de páginas e recursos, âncoras, IDs e 
 ## Identidade visual
 
 O fundo animado de partículas e conexões, os módulos azuis e a imagem de benefícios retomam a referência original. A logo oficial está incorporada nas páginas para não depender de uma requisição separada ao arquivo de imagem. A animação respeita a preferência de movimento reduzido e pausa quando fica fora da tela.
+
+## Revisão de conteúdo e navegação
+
+- Sobre nós: origem, desafios, ecossistema, compromisso, cinco diferenciais, quatro públicos atendidos e chamada final.
+- Soluções: as cinco apresentações completas, com imagens, recursos e benefícios.
+- Páginas de serviços: banners originais para computador e celular, motivos para contratar e todos os recursos incluídos.
+- “Ver mais detalhes”, em Sobre nós, desce até a seção `#sobre`. “Contratar Solução” desce até `#contratar`, no final de cada serviço. A chamada final segue para o formulário de contato.
+- Menu Soluções com as cinco páginas, navegação por teclado e fechamento por Escape.
