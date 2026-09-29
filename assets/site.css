@@ -19,8 +19,8 @@ h1,h2,h3{font-family:Brand,Poppins,'Segoe UI',Arial,sans-serif}
 .brand img{width:254px;height:auto;filter:brightness(0) invert(1)}
 .hero{background:#2843fa}
 .hero:before{display:none}
-.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.hero-particles canvas{display:block;width:100%;height:100%}
+.hero-particles{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hero-particles canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .hero>.container{position:relative;z-index:1;pointer-events:none}
 .hero a,.hero button{pointer-events:auto}
 .hero-inner{max-width:1100px;padding:112px 0 96px;text-align:center}
@@ -69,6 +69,9 @@ h1,h2,h3{font-family:Brand,Poppins,'Segoe UI',Arial,sans-serif}
 .original-icon{fill:currentColor;stroke:none;stroke-width:0}
 .nav-wrap{height:70px}
 .brand img{width:175px;max-width:100%}
+.header .brand img,.footer .brand img{filter:none}
+.hero,.reference-hero,.service-hero{position:relative;isolation:isolate}
+.reference-hero>.container,.service-hero>.container{position:relative;z-index:1}
 .nav-links{gap:34px}
 .nav-links>a,.nav-solutions>summary{font-size:15px;font-weight:400;line-height:1.5}
 .nav-solutions{position:relative}

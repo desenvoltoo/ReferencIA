@@ -61,7 +61,7 @@ Sintaxe JavaScript, referências locais de páginas e recursos, âncoras, IDs e 
 
 ## Identidade visual
 
-O fundo animado de partículas e conexões, os módulos azuis e a imagem de benefícios retomam a referência original. A logo oficial está incorporada nas páginas para não depender de uma requisição separada ao arquivo de imagem. A animação respeita a preferência de movimento reduzido e pausa quando fica fora da tela.
+O fundo animado de partículas e conexões, os módulos azuis e a imagem de benefícios retomam a referência original. A logo oficial é servida localmente, com suas cores originais e sem filtros que apaguem o símbolo. A animação respeita a preferência de movimento reduzido e pausa quando fica fora da tela.
 
 ## Revisão de conteúdo e navegação
 
@@ -70,3 +70,7 @@ O fundo animado de partículas e conexões, os módulos azuis e a imagem de bene
 - Páginas de serviços: banners originais para computador e celular, motivos para contratar e todos os recursos incluídos.
 - “Ver mais detalhes”, em Sobre nós, desce até a seção `#sobre`. “Contratar Solução” desce até `#contratar`, no final de cada serviço. A chamada final segue para o formulário de contato.
 - Menu Soluções com as cinco páginas, navegação por teclado e fechamento por Escape.
+
+## Fundo animado
+
+`assets/background.js` inicializa o particles.js local em cada banner de abertura (início, sobre nós, soluções, pacote e serviços). O canvas acompanha as dimensões do banner, inclusive após carregamento das fontes e rotação do celular. As partículas verde-lima e conexões brancas ficam atrás do conteúdo; a rede reage ao ponteiro sem bloquear links. Com movimento reduzido, ela permanece visível e estática; fora da tela, a animação pausa.
