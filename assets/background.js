@@ -17,7 +17,9 @@
     function updateMotion() {
       if (!instance) return;
       const animate = visible && !document.hidden && !reducedMotion.matches;
-      instance.interactivity.events.onhover.enable = animate && !smallScreen.matches;
+      // A narrow preview or window can still have a mouse. Filter touch events
+      // in the pointer handler instead of disabling interaction by screen width.
+      instance.interactivity.events.onhover.enable = animate;
       window.cancelAnimationFrame(instance.fn.drawAnimFrame);
       instance.particles.move.enable = animate;
       instance.fn.vendors.draw();
@@ -78,7 +80,10 @@
       instance.interactivity.status = 'mousemove';
     }, { passive: true });
     hero.addEventListener('pointerleave', () => {
-      if (instance) instance.interactivity.status = 'mouseleave';
+      if (!instance) return;
+      instance.interactivity.status = 'mouseleave';
+      instance.interactivity.mouse.pos_x = null;
+      instance.interactivity.mouse.pos_y = null;
     });
     reducedMotion.addEventListener('change', updateMotion);
     smallScreen.addEventListener('change', queueResize);
