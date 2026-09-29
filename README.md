@@ -76,3 +76,5 @@ O fundo animado de partículas e conexões, os módulos azuis e a imagem de bene
 `assets/background.js` desenha a rede de partículas em canvas e controla seu loop de animação em cada banner de abertura (início, sobre nós, soluções, pacote e serviços). O canvas acompanha as dimensões do banner, inclusive após carregamento das fontes e rotação do celular. As partículas verde-lima e conexões brancas ficam atrás do conteúdo; a rede reage ao ponteiro sem bloquear links. Com movimento reduzido, ela permanece visível e estática; fora da tela, a animação pausa.
 
 A reação ao mouse funciona também em janelas estreitas e prévias laterais: partículas próximas se afastam do cursor e suas conexões são redesenhadas. Toques não acionam a repulsão, e a preferência de movimento reduzido continua sendo respeitada.
+
+A posição do cursor é lida pela janela e projetada no banner, incluindo quando o ponteiro passa sobre textos e botões. A repulsão tem resposta imediata e permanece suave com movimento reduzido.

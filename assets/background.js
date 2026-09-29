@@ -58,6 +58,11 @@
     function setPointer(event) {
       if (event.pointerType === 'touch') return;
       const bounds = surface.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right ||
+          event.clientY < bounds.top || event.clientY > bounds.bottom) {
+        state.pointer.active = false;
+        return;
+      }
       state.pointer.x = event.clientX - bounds.left;
       state.pointer.y = event.clientY - bounds.top;
       state.pointer.active = true;
@@ -66,14 +71,18 @@
     function clearPointer() { state.pointer.active = false; }
 
     function updatePoint(point) {
-      if (state.pointer.active && !reducedMotion.matches) {
+      if (state.pointer.active) {
         const dx = point.x - state.pointer.x;
         const dy = point.y - state.pointer.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance > 0 && distance < 210) {
-          const force = (1 - distance / 210) * 0.8;
-          point.vx += dx / distance * force;
-          point.vy += dy / distance * force;
+        if (distance > 0 && distance < 240) {
+          // The original effect pushes the point away immediately. Keep a
+          // gentler version for reduced-motion users, but never make it inert.
+          const force = Math.pow(1 - distance / 240, 2) * (reducedMotion.matches ? 1.7 : 6.5);
+          point.x += dx / distance * force;
+          point.y += dy / distance * force;
+          point.vx += dx / distance * (reducedMotion.matches ? 0.06 : 0.2);
+          point.vy += dy / distance * (reducedMotion.matches ? 0.06 : 0.2);
         }
       }
       const maxVelocity = reducedMotion.matches ? 0.42 : 2.8;
@@ -126,6 +135,8 @@
 
     hero.addEventListener('pointermove', setPointer, { passive: true });
     hero.addEventListener('pointerleave', clearPointer, { passive: true });
+    window.addEventListener('mousemove', setPointer, { passive: true });
+    window.addEventListener('mouseleave', clearPointer, { passive: true });
     document.addEventListener('visibilitychange', updateVisibility);
     reducedMotion.addEventListener('change', () => {
       state.speed = reducedMotion.matches ? 0.18 : 0.9;
