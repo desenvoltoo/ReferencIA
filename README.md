@@ -5,7 +5,7 @@ Site institucional reconstruído a partir de https://referencia.tech/, com o con
 ## Páginas
 
 - Início, soluções, sobre nós e contato.
-- Agente IA, WhatsApp Robot, URA Inteligente, LeadLab Growth, Treinamento Especializado e Solução Completa.
+- Agente IA, WhatsApp Robot, Treinamento Especializado e Solução Completa.
 - Política de Privacidade e página 404.
 - Rota anterior `/solucoes-inteligentes-para-gestao-educacional/` preservada, com canonical apontando para `/solucoes/`.
 
@@ -66,10 +66,10 @@ O fundo animado de partículas e conexões, os módulos azuis e a imagem de bene
 ## Revisão de conteúdo e navegação
 
 - Sobre nós: origem, desafios, ecossistema, compromisso, cinco diferenciais, quatro públicos atendidos e chamada final.
-- Soluções: as cinco apresentações completas, com imagens, recursos e benefícios.
+- Soluções: as três apresentações completas, com imagens, recursos e benefícios.
 - Páginas de serviços: banners originais para computador e celular, motivos para contratar e todos os recursos incluídos.
 - “Ver mais detalhes”, em Sobre nós, desce até a seção `#sobre`. “Contratar Solução” desce até `#contratar`, no final de cada serviço. A chamada final segue para o formulário de contato.
-- Menu Soluções com as cinco páginas, navegação por teclado e fechamento por Escape.
+- Menu Soluções com as três páginas de serviços, navegação por teclado e fechamento por Escape.
 
 ## Fundo animado
 
