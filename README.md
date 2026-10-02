@@ -9,6 +9,39 @@ Site institucional reconstruído a partir de https://referencia.tech/, com o con
 - Política de Privacidade e página 404.
 - Rota anterior `/solucoes-inteligentes-para-gestao-educacional/` preservada, com canonical apontando para `/solucoes/`.
 
+## Publicar no EasyPanel com Docker
+
+Crie um serviço do tipo **App** e configure:
+
+| Campo | Valor |
+| --- | --- |
+| Fonte | GitHub |
+| Repositório | `desenvoltoo/ReferencIA` |
+| Branch | `main` |
+| Build Path / Caminho de compilação | `/` |
+| Método de build | Dockerfile |
+| Caminho do Dockerfile | `Dockerfile` |
+| Domínio: protocolo interno | HTTP |
+| Domínio: porta de destino | `80` |
+| Domínio: caminho | `/` |
+
+Salve e clique em **Deploy / Implantar**. Abra o domínio temporário do serviço para conferir o site. Depois, associe `referencia.tech` ao serviço e ajuste o DNS para o servidor do EasyPanel; o painel gerencia o HTTPS público.
+
+O Dockerfile usa a imagem oficial `nginx:stable-alpine` e inclui os arquivos estáticos diretamente. O serviço funciona sem comandos extras de instalação/inicialização, variáveis de ambiente, banco de dados ou volumes. A verificação de saúde consulta a página inicial do container.
+
+O arquivo `nginx.conf` atende as páginas em suas próprias rotas, mantém a página 404 e permite revalidar o HTML a cada acesso. `.dockerignore` exclui metadados, arquivos de ambiente e outros arquivos de desenvolvimento do contexto de build.
+
+Para testar em uma máquina com Docker:
+
+```sh
+docker build -t referencia-tech .
+docker run --rm -p 8080:80 referencia-tech
+```
+
+Abra http://localhost:8080.
+
+Documentação: https://easypanel.io/docs/services/app
+
 ## Publicar pelo GitHub Pages
 
 No repositório `desenvoltoo/ReferencIA`:

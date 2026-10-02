@@ -1,0 +1,15 @@
+.git
+.gitignore
+.github
+.openai
+.sites-runtime
+.agents
+.codex
+.aws
+node_modules
+dist
+.env
+.env.*
+*.log
+README.md
+AGENTS.md
