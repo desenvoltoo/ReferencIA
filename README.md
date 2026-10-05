@@ -11,7 +11,7 @@ Site institucional reconstruído a partir de https://referencia.tech/, com o con
 
 ## Deploy integrado no EasyPanel com Cloudflare Tunnel
 
-Para publicar o site pelo EasyPanel e conectar o domínio por um túnel Cloudflare, use o arquivo `docker-compose.yml` e siga o guia [EASYPANEL-CLOUDFLARE.md](EASYPANEL-CLOUDFLARE.md). O token fica somente como variável secreta `TUNNEL_TOKEN` no EasyPanel.
+Para publicar o site pelo EasyPanel e conectar o domínio por um túnel Cloudflare, use o arquivo `docker-compose.yml` e siga o guia [EASYPANEL-CLOUDFLARE.md](EASYPANEL-CLOUDFLARE.md). O painel correto é https://easypanel.gruporeferencia.tech. O token fica somente como variável secreta `TUNNEL_TOKEN` no EasyPanel.
 
 ## Publicar no EasyPanel com Docker
 

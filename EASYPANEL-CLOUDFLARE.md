@@ -7,6 +7,8 @@ Este projeto pode ser publicado como uma composição com dois serviços:
 
 O token do túnel é fornecido pelo EasyPanel como variável secreta. Ele não fica no GitHub.
 
+Painel do EasyPanel: https://easypanel.gruporeferencia.tech
+
 ## 1. Preparar o domínio no Cloudflare
 
 1. Entre no painel do Cloudflare e adicione `referencia.tech`.
