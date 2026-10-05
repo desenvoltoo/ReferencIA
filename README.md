@@ -9,6 +9,10 @@ Site institucional reconstruído a partir de https://referencia.tech/, com o con
 - Política de Privacidade e página 404.
 - Rota anterior `/solucoes-inteligentes-para-gestao-educacional/` preservada, com canonical apontando para `/solucoes/`.
 
+## Deploy integrado no EasyPanel com Cloudflare Tunnel
+
+Para publicar o site pelo EasyPanel e conectar o domínio por um túnel Cloudflare, use o arquivo `docker-compose.yml` e siga o guia [EASYPANEL-CLOUDFLARE.md](EASYPANEL-CLOUDFLARE.md). O token fica somente como variável secreta `TUNNEL_TOKEN` no EasyPanel.
+
 ## Publicar no EasyPanel com Docker
 
 Crie um serviço do tipo **App** e configure:
